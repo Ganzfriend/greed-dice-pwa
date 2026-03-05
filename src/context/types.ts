@@ -14,7 +14,7 @@ export type GameState = {
 export type GameContextType = {
   state: GameState;
   rollDice: () => void;
-  bankScore: (points: number) => void;
+  savePoints: (points: number) => void;
   nextPlayer: () => void;
   resetGame: () => void;
 };

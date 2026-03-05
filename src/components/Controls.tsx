@@ -4,7 +4,7 @@ import { useGame } from "@/context";
 export function Controls() {
   const {
     rollDice,
-    bankScore,
+    savePoints,
     nextPlayer,
     // state
   } = useGame();
@@ -12,7 +12,7 @@ export function Controls() {
   return (
     <div className="flex gap-2 mt-4">
       <Button onClick={rollDice}>Roll Dice</Button>
-      <Button onClick={() => bankScore(500)}>Bank 500</Button>
+      <Button onClick={() => savePoints(500)}>Bank 500</Button>
       <Button onClick={nextPlayer}>Next Player</Button>
     </div>
   );

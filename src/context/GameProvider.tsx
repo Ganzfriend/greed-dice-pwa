@@ -15,11 +15,11 @@ const GameProvider: React.FC<{ children: React.ReactNode }> = ({
     setDice(dice.map(() => Math.floor(Math.random() * 6) + 1));
   };
 
-  const bankScore = (points: number) => {
+  const savePoints = (points: number) => {
     setPlayers((prev) =>
       prev.map((p, i) =>
-        i === currentPlayer ? { ...p, score: p.score + points } : p
-      )
+        i === currentPlayer ? { ...p, score: p.score + points } : p,
+      ),
     );
     if (players[currentPlayer].score + points >= 10000) {
       setWinner(players[currentPlayer]);
@@ -42,7 +42,7 @@ const GameProvider: React.FC<{ children: React.ReactNode }> = ({
       value={{
         state: { players, currentPlayer, dice, winner },
         rollDice,
-        bankScore,
+        savePoints,
         nextPlayer,
         resetGame,
       }}
