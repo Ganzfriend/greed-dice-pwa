@@ -10,13 +10,14 @@ const GameProvider: React.FC<{ children: React.ReactNode }> = ({
   const [currentPlayer, setCurrentPlayer] = useState(0);
   // dice value represents numeric val AND whether or not it's saved
   const [dice, setDice] = useState<GameState["dice"]>(
-    new Array(6).map(() => [1, false]),
+    new Array(6).fill([1, false]),
   );
   const [tempPoints, setTempPoints] = useState<number>(0);
   const [isABust, setIsABust] = useState<boolean>(false);
   const [winner, setWinner] = useState<Player | null>(null);
 
   const calculatePoints = (newDice: number[]): number => {
+    console.log({ newDice });
     const counts: Record<number, number> = {};
 
     for (let i = 0; i < 6; i++) {

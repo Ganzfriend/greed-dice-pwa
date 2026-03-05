@@ -32,7 +32,7 @@ export function Controls() {
   };
 
   const saveDiceAndRoll = () => {
-    saveDice(tempDiceToSave);
+    if (tempDiceToSave.size > 0) saveDice(tempDiceToSave);
     rollDice();
   };
 
@@ -50,7 +50,7 @@ export function Controls() {
       <div>
         {dice.map(([v, isSaved], i) => {
           return (
-            <Button onClick={() => addDieToSave(i)} disabled={isSaved} key={v}>
+            <Button onClick={() => addDieToSave(i)} disabled={isSaved} key={i}>
               {v}
             </Button>
           );
