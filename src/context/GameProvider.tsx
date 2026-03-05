@@ -89,22 +89,24 @@ const GameProvider: React.FC<{ children: React.ReactNode }> = ({
     });
   };
 
-  const addTempPoints = (newDice: Set<number>) => {
-    const newPoints = calculatePoints(Array.from(newDice));
+  const addTempPoints = (newDiceIdxs: Set<number>) => {
+    const newPoints = calculatePoints(
+      Array.from(newDiceIdxs).map((v) => dice[v][0]),
+    );
     setTempPoints((prev) => prev + newPoints);
   };
 
-  const saveDice = (newDice: Set<number>) => {
+  const saveDice = (newDiceIdxs: Set<number>) => {
     const updatedDice = [...dice];
 
-    newDice.forEach((v) => {
-      updatedDice[v] = [dice[v][0], true];
+    newDiceIdxs.forEach((i) => {
+      updatedDice[i] = [dice[i][0], true];
     });
 
     setDice(updatedDice);
 
-    // calculate value of newDice combo to add to tempPoints
-    addTempPoints(newDice);
+    // calculate value of newDiceIdxs combo to add to tempPoints
+    addTempPoints(newDiceIdxs);
   };
 
   const savePoints = (points: number) => {

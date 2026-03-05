@@ -19,13 +19,13 @@ export function Controls() {
 
   const [tempDiceToSave, setTempDiceToSave] = useState<Set<number>>(new Set());
 
-  const addDieToSave = (v: number) => {
+  const addDieToSave = (idx: number) => {
     setTempDiceToSave((prev) => {
       const result = new Set(prev);
-      if (result.has(v)) {
-        result.delete(v);
+      if (result.has(idx)) {
+        result.delete(idx);
       } else {
-        result.add(v);
+        result.add(idx);
       }
       return result;
     });
@@ -48,9 +48,9 @@ export function Controls() {
         Roll Dice
       </Button>
       <div>
-        {dice.map(([v, isSaved]) => {
+        {dice.map(([v, isSaved], i) => {
           return (
-            <Button onClick={() => addDieToSave(v)} disabled={isSaved} key={v}>
+            <Button onClick={() => addDieToSave(i)} disabled={isSaved} key={v}>
               {v}
             </Button>
           );
