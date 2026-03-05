@@ -3,15 +3,15 @@ import { useState } from "react";
 import GameContext from "./GameContext";
 import type { GameState, Player } from "./types";
 
+const defaultDice = new Array(6).fill([1, false]);
+
 const GameProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [players, setPlayers] = useState<Player[]>([]);
   const [currentPlayer, setCurrentPlayer] = useState(0);
   // dice value represents numeric val AND whether or not it's saved
-  const [dice, setDice] = useState<GameState["dice"]>(
-    new Array(6).fill([1, false]),
-  );
+  const [dice, setDice] = useState<GameState["dice"]>(defaultDice);
   const [tempPoints, setTempPoints] = useState<number>(0);
   const [isABust, setIsABust] = useState<boolean>(false);
   const [winner, setWinner] = useState<Player | null>(null);
@@ -20,7 +20,7 @@ const GameProvider: React.FC<{ children: React.ReactNode }> = ({
     console.log({ newDice });
     const counts: Record<number, number> = {};
 
-    for (let i = 0; i < 6; i++) {
+    for (let i = 1; i <= 6; i++) {
       counts[i] = 0;
     }
 
@@ -65,12 +65,12 @@ const GameProvider: React.FC<{ children: React.ReactNode }> = ({
       if (counts[i] === 3) {
         score += i === 1 ? 300 : i * 100;
       }
-      counts[i] = 0; // Reset count so the single 5s and 1s aren't double-counted later
-    }
 
-    // Remaining singles
-    score += counts[1] * 100;
-    score += counts[5] * 50;
+      // Add the single 1s and 5s
+      if (counts[i] < 3) {
+        score += i === 1 ? counts[1] * 100 : i === 5 ? counts[5] * 50 : 0;
+      }
+    }
 
     return score;
   };
@@ -127,7 +127,7 @@ const GameProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const resetGame = () => {
     setPlayers([]);
-    setDice(new Array(6).map(() => [1, false]));
+    setDice(defaultDice);
     setCurrentPlayer(0);
     setWinner(null);
   };
