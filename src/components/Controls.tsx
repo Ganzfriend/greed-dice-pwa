@@ -6,16 +6,17 @@ export function Controls() {
   const {
     rollDice,
     savePoints,
-    saveDice,
+    saveSelectedDice,
     nextPlayer,
     resetGame,
     state: {
-      // winner,
+      winnerPlayerId,
       players,
-      currentPlayer,
+      currentPlayerId,
       dice,
-      isABust,
-      tempPoints,
+      savedDice,
+      isBust,
+      turnPoints,
     },
   } = useGame();
 
@@ -35,13 +36,13 @@ export function Controls() {
     });
   };
 
-  const saveDiceAndRoll = () => {
+  const saveSelectedDiceAndRoll = () => {
     if (rollCount > 0 && tempDiceToSave.size < 1) {
       alert("Save at least one die before rolling again!");
       return;
     }
 
-    if (tempDiceToSave.size > 0) saveDice(tempDiceToSave);
+    if (tempDiceToSave.size > 0) saveSelectedDice([...tempDiceToSave]);
 
     rollDice();
 
@@ -49,8 +50,8 @@ export function Controls() {
   };
 
   const handleSavePoints = () => {
-    const { score } = players[currentPlayer];
-    if (score === 0 && tempPoints < 500) {
+    const { score } = players[currentPlayerId];
+    if (score === 0 && turnPoints < 500) {
       alert("You need at least 500 points to get on the board!");
       return;
     }
@@ -59,35 +60,50 @@ export function Controls() {
 
   return (
     <div className="flex gap-2 mt-4">
-      {isABust && (
+      {isBust && (
         <div>
           <h2>BUST!</h2>
           <h4>Someone got greedy...</h4>
         </div>
       )}
-      <Button onClick={saveDiceAndRoll} disabled={isABust}>
+      {!!winnerPlayerId && <h1>The winner is: winnerPlayerId </h1>}
+      <Button onClick={saveSelectedDiceAndRoll} disabled={isBust}>
         Roll Dice
       </Button>
       <div>
-        {dice.map(([v, isSaved], i) => {
+        {dice.map((value, i) => {
           return (
             <Button
               onClick={() => addDieToSave(i)}
-              disabled={isSaved}
+              // disabled={saved}
               variant={tempDiceToSave.has(i) ? "default" : "outline"}
               key={i}
             >
-              {v}
+              {value}
             </Button>
           );
         })}
       </div>
-      <Button onClick={handleSavePoints} disabled={isABust}>
-        Save {tempPoints}
+      <div>
+        {savedDice.map((value, i) => {
+          return (
+            <Button
+              onClick={() => addDieToSave(i)}
+              disabled={true}
+              variant={tempDiceToSave.has(i) ? "default" : "outline"}
+              key={i}
+            >
+              {value}
+            </Button>
+          );
+        })}
+      </div>
+      <Button onClick={handleSavePoints} disabled={isBust}>
+        Save {turnPoints}
       </Button>
       <Button onClick={nextPlayer}>Next Player</Button>
       <Button onClick={resetGame}>Reset Game</Button>
-      <dialog open={isABust}>
+      <dialog open={isBust}>
         <h1>BUST!</h1>
       </dialog>
     </div>

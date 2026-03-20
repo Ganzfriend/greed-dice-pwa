@@ -1,94 +1,102 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 import GameContext from "./GameContext";
 import { calculatePoints } from "./helpers";
-import type { GameContextType, GameState, Player } from "./types";
+import type { GameContextType, GameState } from "./types";
 
-const defaultDice: GameState["dice"] = new Array(6).fill([1, false]);
+const defaultDice: GameState["dice"] = new Array(6).fill(1);
+
+const initialState: GameState = {
+  players: [],
+  currentPlayerId: 0,
+  dice: defaultDice,
+  savedDice: [],
+  turnPoints: 0,
+  winnerPlayerId: null,
+  isBust: false,
+};
 
 const GameProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [players, setPlayers] = useState<Player[]>([]);
-  const [currentPlayer, setCurrentPlayer] = useState(0);
-  // dice value represents numeric val AND whether or not it's saved
-  const [dice, setDice] = useState<GameState["dice"]>(defaultDice);
-  const [tempPoints, setTempPoints] = useState<number>(0);
-  const [winner, setWinner] = useState<Player | null>(null);
-
-  const isABust = useMemo(() => {
-    const values = [...dice].map(([v]) => v);
-    return calculatePoints(values) === 0;
-  }, [dice]);
+  const [state, setState] = useState<GameState>(initialState);
 
   const rollDice: GameContextType["rollDice"] = () => {
     console.log("## calling rollDice");
-    setDice((prev) =>
-      prev.map(([value, isSaved]) =>
-        isSaved
-          ? [value, isSaved]
-          : [Math.floor(Math.random() * 6) + 1, isSaved],
-      ),
-    );
+    setState((prev) => {
+      const newDice = prev.dice.map(() => Math.floor(Math.random() * 6) + 1);
+      const isBust = calculatePoints(newDice) === 0;
+
+      return {
+        ...prev,
+        dice: newDice,
+        isBust,
+        savedDice: [],
+      };
+    });
   };
 
-  const addTempPoints = (newDiceIdxs: Set<number>) => {
-    const newPoints = calculatePoints(
-      Array.from(newDiceIdxs).map((v) => dice[v][0]),
-    );
-    setTempPoints((prev) => prev + newPoints);
-  };
+  const saveSelectedDice: GameContextType["saveSelectedDice"] = (
+    newDice: number[],
+  ) => {
+    const newPoints = calculatePoints(newDice);
 
-  const saveDice: GameContextType["saveDice"] = (newDiceIdxs: Set<number>) => {
-    const updatedDice = [...dice];
+    const updatedDice = [...state.dice];
 
-    newDiceIdxs.forEach((i) => {
-      updatedDice[i] = [dice[i][0], true];
+    newDice.forEach((v) => {
+      const idx = updatedDice.indexOf(v);
+      updatedDice.splice(idx, 1);
     });
 
-    setDice(updatedDice);
-
-    // calculate value of newDiceIdxs combo to add to tempPoints
-    addTempPoints(newDiceIdxs);
+    setState((prev) => {
+      return {
+        ...prev,
+        dice: updatedDice,
+        savedDice: [...prev.savedDice, ...newDice],
+        turnPoints: prev.turnPoints + newPoints,
+      };
+    });
   };
 
   const savePoints: GameContextType["savePoints"] = () => {
-    setPlayers((prev) =>
-      prev.map((p, i) =>
-        i === currentPlayer ? { ...p, score: p.score + tempPoints } : p,
+    setState((prev) => ({
+      ...prev,
+      players: prev.players.map((p, i) =>
+        i === prev.currentPlayerId
+          ? { ...p, score: p.score + prev.turnPoints }
+          : p,
       ),
-    );
-    if (players[currentPlayer].score + tempPoints >= 10000) {
-      setWinner(players[currentPlayer]);
+    }));
+
+    if (
+      state.players[state.currentPlayerId].score + state.turnPoints >=
+      10000
+    ) {
+      setState((prev) => ({ ...prev, winnerPlayerId: state.currentPlayerId }));
     }
   };
 
   const nextPlayer: GameContextType["nextPlayer"] = () => {
-    setCurrentPlayer((prev) => (prev + 1) % players.length);
+    setState((prev) => ({
+      ...prev,
+      currentPlayerId: (prev.currentPlayerId + 1) % prev.players.length,
+    }));
   };
 
   const resetGame: GameContextType["resetGame"] = () => {
-    setPlayers([]);
-    setDice(defaultDice);
-    setCurrentPlayer(0);
-    setWinner(null);
-    setTempPoints(0);
+    setState(initialState);
   };
 
-  return (
-    <GameContext.Provider
-      value={{
-        state: { players, currentPlayer, dice, winner, tempPoints, isABust },
-        rollDice,
-        savePoints,
-        nextPlayer,
-        resetGame,
-        saveDice,
-      }}
-    >
-      {children}
-    </GameContext.Provider>
-  );
+  const value: GameContextType = {
+    state,
+    rollDice,
+    saveSelectedDice,
+    savePoints,
+    nextPlayer,
+    resetGame,
+  };
+
+  return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
 };
 
 export default GameProvider;
