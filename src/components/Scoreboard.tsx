@@ -6,10 +6,12 @@ export function Scoreboard() {
 
   return (
     <div className="grid gap-2">
-      {state.players.map((p, i) => (
+      {state.players.map((p) => (
         <Card
           key={p.playerId}
-          className={i === state.currentPlayerId ? "border-blue-500" : ""}
+          className={
+            p.playerId === state.currentPlayerId ? "border-blue-500" : ""
+          }
         >
           <CardContent>
             <p className="font-bold">{p.name}</p>

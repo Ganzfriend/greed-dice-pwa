@@ -1,5 +1,9 @@
-import { useState } from "react";
+import {
+  // useCallback, useEffect,
+  useState,
+} from "react";
 
+// import { supabase } from "@/lib/supabaseClient";
 import GameContext from "./GameContext";
 import { calculatePoints } from "./helpers";
 import type { GameContextType, GameState } from "./types";
@@ -15,6 +19,51 @@ const initialState: GameState = {
   winnerPlayerId: null,
   isBust: false,
 };
+
+// export const GameProvider: React.FC<{
+//   gameId: number;
+//   children: React.ReactNode;
+// }> = ({ gameId, children }) => {
+//   const [game, setGame] = useState(null);
+
+//   const refreshGame = useCallback(
+//     async function () {
+//       const { data } = await supabase
+//         .from("game_players")
+//         .select("*, players(*)")
+//         .eq("game_id", gameId);
+
+//       setGame(data);
+//     },
+//     [gameId],
+//   );
+
+//   useEffect(() => {
+//     const channel = supabase
+//       .channel("game-updates")
+//       .on(
+//         "postgres_changes",
+//         {
+//           event: "*",
+//           schema: "public",
+//           table: "game_players",
+//           filter: `game_id=eq.${gameId}`,
+//         },
+//         (payload) => {
+//           refreshGame();
+//         },
+//       )
+//       .subscribe();
+
+//     return () => {
+//       supabase.removeChannel(channel);
+//     };
+//   }, [gameId, refreshGame]);
+
+//   return (
+//     <GameContext.Provider value={{ game }}>{children}</GameContext.Provider>
+//   );
+// };
 
 const GameProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
