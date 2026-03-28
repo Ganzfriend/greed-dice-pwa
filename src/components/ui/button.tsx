@@ -5,33 +5,33 @@ import { Slot } from "radix-ui"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "tw-:group/button tw-:inline-flex tw-:shrink-0 tw-:items-center tw-:justify-center tw-:rounded-lg tw-:border tw-:border-transparent tw-:bg-clip-padding tw-:text-sm tw-:font-medium tw-:whitespace-nowrap tw-:transition-all tw-:outline-none tw-:select-none tw-:focus-visible:border-ring tw-:focus-visible:ring-3 tw-:focus-visible:ring-ring/50 tw-:active:not-aria-[haspopup]:translate-y-px tw-:disabled:pointer-events-none tw-:disabled:opacity-50 tw-:aria-invalid:border-destructive tw-:aria-invalid:ring-3 tw-:aria-invalid:ring-destructive/20 tw-:dark:aria-invalid:border-destructive/50 tw-:dark:aria-invalid:ring-destructive/40 tw-:[&_svg]:pointer-events-none tw-:[&_svg]:shrink-0 tw-:[&_svg:not([class*=size-])]:size-4",
+  "tw-group/button tw-inline-flex tw-shrink-0 tw-items-center tw-justify-center tw-rounded-lg tw-border tw-border-transparent tw-bg-clip-padding tw-text-sm tw-font-medium tw-whitespace-nowrap tw-transition-all tw-outline-none tw-select-none focus-visible:tw-border-ring focus-visible:tw-ring-3 focus-visible:tw-ring-ring/50 active:not-aria-[haspopup]:tw-translate-y-px disabled:tw-pointer-events-none disabled:tw-opacity-50 aria-invalid:tw-border-destructive aria-invalid:tw-ring-3 aria-invalid:tw-ring-destructive/20 dark:aria-invalid:tw-border-destructive/50 dark:aria-invalid:tw-ring-destructive/40 [&_svg]:tw-pointer-events-none [&_svg]:tw-shrink-0 [&_svg:not([class*=size-])]:tw-size-4",
   {
     variants: {
       variant: {
-        default: "tw-:bg-primary tw-:text-primary-foreground tw-:[a]:hover:bg-primary/80",
+        default: "tw-bg-primary tw-text-primary-foreground [a]:hover:tw-bg-primary/80",
         outline:
-          "tw-:border-border tw-:bg-background tw-:hover:bg-muted tw-:hover:text-foreground tw-:aria-expanded:bg-muted tw-:aria-expanded:text-foreground tw-:dark:border-input tw-:dark:bg-input/30 tw-:dark:hover:bg-input/50",
+          "tw-border-border tw-bg-background hover:tw-bg-muted hover:tw-text-foreground aria-expanded:tw-bg-muted aria-expanded:tw-text-foreground dark:tw-border-input dark:tw-bg-input/30 dark:hover:tw-bg-input/50",
         secondary:
-          "tw-:bg-secondary tw-:text-secondary-foreground tw-:hover:bg-secondary/80 tw-:aria-expanded:bg-secondary tw-:aria-expanded:text-secondary-foreground",
+          "tw-bg-secondary tw-text-secondary-foreground hover:tw-bg-secondary/80 aria-expanded:tw-bg-secondary aria-expanded:tw-text-secondary-foreground",
         ghost:
-          "tw-:hover:bg-muted tw-:hover:text-foreground tw-:aria-expanded:bg-muted tw-:aria-expanded:text-foreground tw-:dark:hover:bg-muted/50",
+          "hover:tw-bg-muted hover:tw-text-foreground aria-expanded:tw-bg-muted aria-expanded:tw-text-foreground dark:hover:tw-bg-muted/50",
         destructive:
-          "tw-:bg-destructive/10 tw-:text-destructive tw-:hover:bg-destructive/20 tw-:focus-visible:border-destructive/40 tw-:focus-visible:ring-destructive/20 tw-:dark:bg-destructive/20 tw-:dark:hover:bg-destructive/30 tw-:dark:focus-visible:ring-destructive/40",
-        link: "tw-:text-primary tw-:underline-offset-4 tw-:hover:underline",
+          "tw-bg-destructive/10 tw-text-destructive hover:tw-bg-destructive/20 focus-visible:tw-border-destructive/40 focus-visible:tw-ring-destructive/20 dark:tw-bg-destructive/20 dark:hover:tw-bg-destructive/30 dark:focus-visible:tw-ring-destructive/40",
+        link: "tw-text-primary tw-underline-offset-4 hover:tw-underline",
       },
       size: {
         default:
-          "tw-:h-8 tw-:gap-1.5 tw-:px-2.5 tw-:has-data-[icon=inline-end]:pr-2 tw-:has-data-[icon=inline-start]:pl-2",
-        xs: "tw-:h-6 tw-:gap-1 tw-:rounded-[min(var(--radius-md),10px)] tw-:px-2 tw-:text-xs tw-:in-data-[slot=button-group]:rounded-lg tw-:has-data-[icon=inline-end]:pr-1.5 tw-:has-data-[icon=inline-start]:pl-1.5 tw-:[&_svg:not([class*=size-])]:size-3",
-        sm: "tw-:h-7 tw-:gap-1 tw-:rounded-[min(var(--radius-md),12px)] tw-:px-2.5 tw-:text-[0.8rem] tw-:in-data-[slot=button-group]:rounded-lg tw-:has-data-[icon=inline-end]:pr-1.5 tw-:has-data-[icon=inline-start]:pl-1.5 tw-:[&_svg:not([class*=size-])]:size-3.5",
-        lg: "tw-:h-9 tw-:gap-1.5 tw-:px-2.5 tw-:has-data-[icon=inline-end]:pr-3 tw-:has-data-[icon=inline-start]:pl-3",
-        icon: "tw-:size-8",
+          "tw-h-8 tw-gap-1.5 tw-px-2.5 has-data-[icon=inline-end]:tw-pr-2 has-data-[icon=inline-start]:tw-pl-2",
+        xs: "tw-h-6 tw-gap-1 tw-rounded-[min(var(--radius-md),10px)] tw-px-2 tw-text-xs in-data-[slot=button-group]:tw-rounded-lg has-data-[icon=inline-end]:tw-pr-1.5 has-data-[icon=inline-start]:tw-pl-1.5 [&_svg:not([class*=size-])]:tw-size-3",
+        sm: "tw-h-7 tw-gap-1 tw-rounded-[min(var(--radius-md),12px)] tw-px-2.5 tw-text-[0.8rem] in-data-[slot=button-group]:tw-rounded-lg has-data-[icon=inline-end]:tw-pr-1.5 has-data-[icon=inline-start]:tw-pl-1.5 [&_svg:not([class*=size-])]:tw-size-3.5",
+        lg: "tw-h-9 tw-gap-1.5 tw-px-2.5 has-data-[icon=inline-end]:tw-pr-3 has-data-[icon=inline-start]:tw-pl-3",
+        icon: "tw-size-8",
         "icon-xs":
-          "tw-:size-6 tw-:rounded-[min(var(--radius-md),10px)] tw-:in-data-[slot=button-group]:rounded-lg tw-:[&_svg:not([class*=size-])]:size-3",
+          "tw-size-6 tw-rounded-[min(var(--radius-md),10px)] in-data-[slot=button-group]:tw-rounded-lg [&_svg:not([class*=size-])]:tw-size-3",
         "icon-sm":
-          "tw-:size-7 tw-:rounded-[min(var(--radius-md),12px)] tw-:in-data-[slot=button-group]:rounded-lg",
-        "icon-lg": "tw-:size-9",
+          "tw-size-7 tw-rounded-[min(var(--radius-md),12px)] in-data-[slot=button-group]:tw-rounded-lg",
+        "icon-lg": "tw-size-9",
       },
     },
     defaultVariants: {

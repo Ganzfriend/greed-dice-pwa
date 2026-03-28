@@ -1,19 +1,16 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "lib": ["DOM", "DOM.Iterable", "ES2020"],
     "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "noEmit": true,
+    "baseUrl": ".",
     "esModuleInterop": true,
-    "module": "ESNext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
+    "experimentalDecorators": true,
+    "incremental": true,
     "isolatedModules": true,
     "jsx": "react-jsx",
-    "incremental": true,
-    "baseUrl": ".",
+    "lib": ["DOM", "DOM.Iterable", "ES2020"],
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "noEmit": true,
     "paths": {
       "@/*": ["./src/*"]
     },
@@ -21,7 +18,11 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "ES2020"
   },
   "include": [
     "next-env.d.ts",
