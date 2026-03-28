@@ -1,15 +1,16 @@
-import * as React from "react"
-import { cva, type VariantProps } from "class-variance-authority"
-import { Slot } from "radix-ui"
+import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
+import { Slot } from "radix-ui";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
   "tw-group/button tw-inline-flex tw-shrink-0 tw-items-center tw-justify-center tw-rounded-lg tw-border tw-border-transparent tw-bg-clip-padding tw-text-sm tw-font-medium tw-whitespace-nowrap tw-transition-all tw-outline-none tw-select-none focus-visible:tw-border-ring focus-visible:tw-ring-3 focus-visible:tw-ring-ring/50 active:not-aria-[haspopup]:tw-translate-y-px disabled:tw-pointer-events-none disabled:tw-opacity-50 aria-invalid:tw-border-destructive aria-invalid:tw-ring-3 aria-invalid:tw-ring-destructive/20 dark:aria-invalid:tw-border-destructive/50 dark:aria-invalid:tw-ring-destructive/40 [&_svg]:tw-pointer-events-none [&_svg]:tw-shrink-0 [&_svg:not([class*=size-])]:tw-size-4",
   {
     variants: {
       variant: {
-        default: "tw-bg-primary tw-text-primary-foreground [a]:hover:tw-bg-primary/80",
+        default:
+          "tw-bg-primary tw-text-primary-foreground [a]:hover:tw-bg-primary/80",
         outline:
           "tw-border-border tw-bg-background hover:tw-bg-muted hover:tw-text-foreground aria-expanded:tw-bg-muted aria-expanded:tw-text-foreground dark:tw-border-input dark:tw-bg-input/30 dark:hover:tw-bg-input/50",
         secondary:
@@ -38,8 +39,8 @@ const buttonVariants = cva(
       variant: "default",
       size: "default",
     },
-  }
-)
+  },
+);
 
 function Button({
   className,
@@ -49,9 +50,9 @@ function Button({
   ...props
 }: React.ComponentProps<"button"> &
   VariantProps<typeof buttonVariants> & {
-    asChild?: boolean
+    asChild?: boolean;
   }) {
-  const Comp = asChild ? Slot.Root : "button"
+  const Comp = asChild ? Slot.Root : "button";
 
   return (
     <Comp
@@ -61,7 +62,8 @@ function Button({
       className={cn(buttonVariants({ variant, size, className }))}
       {...props}
     />
-  )
+  );
 }
 
-export { Button, buttonVariants }
+// eslint-disable-next-line react-refresh/only-export-components
+export { Button, buttonVariants };
