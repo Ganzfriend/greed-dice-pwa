@@ -2,8 +2,9 @@ import { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+import "./globals.css";
 
+const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const metadata: Metadata = {

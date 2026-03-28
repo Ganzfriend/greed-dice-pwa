@@ -1,4 +1,4 @@
-import "../../index.css";
+import "../globals.css";
 import { ClientOnly } from "./client";
 
 // eslint-disable-next-line react-refresh/only-export-components
