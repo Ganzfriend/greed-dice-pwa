@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 
 import "./globals.css";
 
-const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const metadata: Metadata = {
