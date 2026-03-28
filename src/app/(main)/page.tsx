@@ -1,8 +1,10 @@
-import { GameProvider } from "./context";
-import { Scoreboard } from "./components/Scoreboard";
-import { Controls } from "./components/Controls";
+"use client";
 
-function App() {
+import { GameProvider } from "@/context";
+import { Scoreboard } from "@/components/Scoreboard";
+import { Controls } from "@/components/Controls";
+
+export default function Page() {
   return (
     <GameProvider>
       <main className="p-6 max-w-md mx-auto">
@@ -13,5 +15,3 @@ function App() {
     </GameProvider>
   );
 }
-
-export default App;
