@@ -27,7 +27,7 @@
   "include": [
     "next-env.d.ts",
     "globals.d.ts",
-    "src",
+    "src/**/*.{ts,tsx}",
     ".next/types/**/*.ts",
     "dist/types/**/*.ts",
     "dist/dev/types/**/*.ts"
