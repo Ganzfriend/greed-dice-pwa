@@ -1,6 +1,6 @@
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils.ts";
 
 function Card({
   className,
@@ -13,11 +13,11 @@ function Card({
       data-size={size}
       className={cn(
         "tw-group/card tw-flex tw-flex-col tw-gap-4 tw-overflow-hidden tw-rounded-xl tw-bg-card tw-py-4 tw-text-sm tw-text-card-foreground tw-ring-1 tw-ring-foreground/10 has-data-[slot=card-footer]:tw-pb-0 has-[>img:first-child]:tw-pt-0 data-[size=sm]:tw-gap-3 data-[size=sm]:tw-py-3 data-[size=sm]:has-data-[slot=card-footer]:tw-pb-0 *:[img:first-child]:tw-rounded-t-xl *:[img:last-child]:tw-rounded-b-xl",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
@@ -26,11 +26,11 @@ function CardHeader({ className, ...props }: React.ComponentProps<"div">) {
       data-slot="card-header"
       className={cn(
         "tw-group/card-header tw-@container/card-header tw-grid tw-auto-rows-min tw-items-start tw-gap-1 tw-rounded-t-xl tw-px-4 group-data-[size=sm]/card:tw-px-3 has-data-[slot=card-action]:tw-grid-cols-[1fr_auto] has-data-[slot=card-description]:tw-grid-rows-[auto_auto] [.border-b]:tw-pb-4 group-data-[size=sm]/card:[.border-b]:tw-pb-3",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
@@ -39,11 +39,11 @@ function CardTitle({ className, ...props }: React.ComponentProps<"div">) {
       data-slot="card-title"
       className={cn(
         "tw-font-heading tw-text-base tw-leading-snug tw-font-medium group-data-[size=sm]/card:tw-text-sm",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
@@ -53,7 +53,7 @@ function CardDescription({ className, ...props }: React.ComponentProps<"div">) {
       className={cn("tw-text-sm tw-text-muted-foreground", className)}
       {...props}
     />
-  )
+  );
 }
 
 function CardAction({ className, ...props }: React.ComponentProps<"div">) {
@@ -62,11 +62,11 @@ function CardAction({ className, ...props }: React.ComponentProps<"div">) {
       data-slot="card-action"
       className={cn(
         "tw-col-start-2 tw-row-span-2 tw-row-start-1 tw-self-start tw-justify-self-end",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 function CardContent({ className, ...props }: React.ComponentProps<"div">) {
@@ -76,7 +76,7 @@ function CardContent({ className, ...props }: React.ComponentProps<"div">) {
       className={cn("tw-px-4 group-data-[size=sm]/card:tw-px-3", className)}
       {...props}
     />
-  )
+  );
 }
 
 function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
@@ -85,11 +85,11 @@ function CardFooter({ className, ...props }: React.ComponentProps<"div">) {
       data-slot="card-footer"
       className={cn(
         "tw-flex tw-items-center tw-rounded-b-xl tw-border-t tw-bg-muted/50 tw-p-4 group-data-[size=sm]/card:tw-p-3",
-        className
+        className,
       )}
       {...props}
     />
-  )
+  );
 }
 
 export {
@@ -100,4 +100,4 @@ export {
   CardAction,
   CardDescription,
   CardContent,
-}
+};

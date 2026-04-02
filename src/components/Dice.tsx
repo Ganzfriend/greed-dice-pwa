@@ -1,15 +1,16 @@
-import { useGame } from "@/context/useGame";
+import { useGame } from "@/context/useGame.ts";
+import { GameContextType } from "@/context/types.ts";
 
-export default function Dice() {
-  const { game } = useGame();
+export function Dice() {
+  const { state }: GameContextType = useGame();
 
-  if (!game) return null;
+  if (!state) return null;
 
   return (
     <div>
-      {game.map((player) => (
-        <div key={player.id}>
-          {player.players.name} — {player.score}
+      {state.players?.map(({ playerId, name, score }) => (
+        <div key={playerId}>
+          {name} — {score}
         </div>
       ))}
     </div>
