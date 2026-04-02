@@ -1,16 +1,26 @@
 "use client";
 
-import { GameProvider } from "@/context/GameContext";
-import Dice from "@/components/Dice.tsx";
-import RollButton from "@/components/RollButton";
-import PlayerList from "@/components/PlayerList";
+import GameProvider from "@/context/GameProvider.tsx";
+import { Dice } from "@/components/index.ts";
+// import { RollButton } from "@/components/index.ts";
+// import { PlayerList } from "@/components/index.ts";
 
-export default function GamePage({ params }) {
+type ParamsType = {
+  params: {
+    gameId: string;
+  };
+};
+
+export default function GamePage({ params }: ParamsType) {
+  console.log("## ", { params });
+
   return (
-    <GameProvider gameId={params.gameId}>
-      <PlayerList />
+    <GameProvider
+    // gameId={params.gameId}
+    >
+      {/* <PlayerList /> */}
       <Dice />
-      <RollButton />
+      {/* <RollButton /> */}
     </GameProvider>
   );
 }
