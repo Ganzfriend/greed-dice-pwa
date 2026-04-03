@@ -29,7 +29,7 @@ export async function signIn({ email, password }: AuthProps) {
   }
 }
 
-export async function signInAnonymously({ captchaToken }: Partial<AuthProps>) {
+export async function guestLogin({ captchaToken }: Partial<AuthProps>) {
   try {
     return await supabase.auth.signInAnonymously({ options: { captchaToken } });
   } catch (e) {

@@ -1,11 +1,11 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+
 import { supabase } from "@/lib/supabaseClient";
+import { PlayerContext } from "@/contexts";
 
-const PlayerContext = createContext(null);
-
-export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
+const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [player, setPlayer] = useState(null);
@@ -46,6 +46,4 @@ export const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
-export function usePlayer() {
-  return useContext(PlayerContext);
-}
+export default PlayerProvider;
