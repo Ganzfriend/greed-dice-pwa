@@ -44,3 +44,10 @@ export async function signOut() {
     console.log("Error signing out: ", e);
   }
 }
+
+export async function updateUser({ email, password }: AuthProps) {
+  supabase.auth.updateUser({
+    email,
+    password,
+  });
+}
