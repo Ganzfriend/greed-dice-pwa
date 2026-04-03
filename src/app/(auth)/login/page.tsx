@@ -1,58 +1,117 @@
 "use client";
 
-import { useState } from "react";
+import { MouseEvent, useRef, useState } from "react";
+import HCaptcha from "@hcaptcha/react-hcaptcha";
+
 import { signIn, signUp, guestLogin } from "@/lib/auth";
+import { Button } from "@/components/ui";
+
+enum ActionType {
+  SIGN_IN = "signIn",
+  SIGN_UP = "signUp",
+  GUEST_LOGIN = "guestLogin",
+}
+
+const AuthActions = {
+  [ActionType.SIGN_IN]: signIn,
+  [ActionType.SIGN_UP]: signUp,
+  [ActionType.GUEST_LOGIN]: guestLogin,
+};
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [token, setToken] = useState<string | null>(null);
+  const emailRef = useRef<HTMLInputElement | null>(null);
+  const passwordRef = useRef<HTMLInputElement | null>(null);
+  const captchaRef = useRef<HCaptcha | null>(null);
+  const sitekey = process.env.NEXT_PUBLIC_HCAPTCHA_SITE_KEY || "";
 
-  async function handleLogin() {
-    const { error } = await signIn({ email, password });
-    if (error) alert(error.message);
-  }
+  const onLoad = () => {
+    // this reaches out to the hCaptcha JS API and runs the
+    // execute function on it. you can use other functions as
+    // documented here:
+    // https://docs.hcaptcha.com/configuration#jsapi
+    captchaRef.current?.execute();
+  };
 
-  async function handleSignup() {
-    const { error } = await signUp({ email, password });
-    if (error) alert(error.message);
-  }
+  const handleSubmit = async (
+    e: MouseEvent<HTMLButtonElement>,
+    action: ActionType,
+  ) => {
+    e.preventDefault();
+    const authAction = AuthActions[action];
+    const email = emailRef?.current?.value;
+    const password = passwordRef?.current?.value;
 
-  async function handleGuest() {
-    const { error } = await guestLogin();
-    if (error) alert(error.message);
-  }
+    if (token && email && password) {
+      console.log(`hCaptcha Token: ${token}`);
+      try {
+        await authAction({ email, password, captchaToken: token });
+      } catch (e) {
+        alert(`Error: ${e}`);
+      }
+      setToken(null);
+      return;
+    }
+
+    setToken(null);
+    alert("Email, password, and captcha are required");
+  };
 
   return (
-    <div className="flex flex-col gap-3 max-w-sm mx-auto mt-20">
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        className="border p-2 rounded"
-      />
+    <form>
+      <div className="flex flex-col gap-3 max-w-sm mx-auto mt-20">
+        <label>
+          Email:
+          <input
+            type="email"
+            name="email"
+            ref={emailRef}
+            autoComplete="email webauthn"
+            className="border p-2 rounded"
+          />
+        </label>
 
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        className="border p-2 rounded"
-      />
+        <label>
+          Password:
+          <input
+            type="password"
+            name="password"
+            ref={passwordRef}
+            autoComplete="new-password webauthn"
+            className="border p-2 rounded"
+          />
+        </label>
 
-      <button onClick={handleLogin} className="btn">
-        Login
-      </button>
+        <HCaptcha
+          sitekey={sitekey}
+          onLoad={onLoad}
+          onVerify={(token) => setToken(token)}
+          ref={captchaRef}
+        />
 
-      <button onClick={handleSignup} className="btn">
-        Create Account
-      </button>
+        <Button
+          onClick={(e) => handleSubmit(e, ActionType.SIGN_IN)}
+          className="btn"
+        >
+          Login
+        </Button>
 
-      <div className="text-center opacity-60">or</div>
+        <Button
+          onClick={(e) => handleSubmit(e, ActionType.SIGN_UP)}
+          className="btn"
+        >
+          Create Account
+        </Button>
 
-      <button onClick={handleGuest} className="btn">
-        Continue as Guest
-      </button>
-    </div>
+        <div className="text-center opacity-60">or</div>
+
+        <Button
+          onClick={(e) => handleSubmit(e, ActionType.GUEST_LOGIN)}
+          className="btn"
+        >
+          Continue as Guest
+        </Button>
+      </div>
+    </form>
   );
 }

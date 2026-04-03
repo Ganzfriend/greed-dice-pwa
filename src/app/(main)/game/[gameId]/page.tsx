@@ -2,8 +2,8 @@
 
 import { GameProvider } from "@/providers";
 import { Dice } from "@/components";
-// import { useAuth } from "@/hooks";
-// import { Router } from "next/router";
+import { useAuth } from "@/hooks";
+import { useRouter } from "next/navigation";
 // import { RollButton } from "@/components";
 // import { PlayerList } from "@/components";
 
@@ -15,12 +15,12 @@ type ParamsType = {
 
 export default function GamePage({ params }: ParamsType) {
   console.log("## ", { params });
-  // const router = new Router();
-  // const { user } = useAuth();
+  const router = useRouter();
+  const { user } = useAuth();
 
-  // if (!user) {
-  //   router.push("/login");
-  // }
+  if (!user) {
+    router.push("/login");
+  }
 
   return (
     <GameProvider gameId={params.gameId}>
