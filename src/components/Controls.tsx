@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui";
-import { useGame } from "@/context";
+import { useGame } from "@/hooks";
 import { useState } from "react";
 
 export function Controls() {
@@ -9,7 +9,7 @@ export function Controls() {
     saveSelectedDice,
     nextPlayer,
     resetGame,
-    state: {
+    game: {
       winnerPlayerId,
       players,
       currentPlayerId,

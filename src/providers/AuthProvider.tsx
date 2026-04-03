@@ -3,10 +3,10 @@
 import { useEffect, useState } from "react";
 import { User } from "@supabase/supabase-js";
 
-import { supabase } from "@/lib/supabaseClient";
-import { AuthContext } from "@/contexts";
+import { AuthContext } from "../contexts";
+import { supabase } from "../lib/supabaseClient";
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
@@ -24,4 +24,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   return (
     <AuthContext.Provider value={{ user }}>{children}</AuthContext.Provider>
   );
-}
+};
+
+export default AuthProvider;

@@ -1,7 +1,7 @@
 "use client";
 
 import { joinGame } from "@/server/actions/joinGame";
-import { usePlayer } from "@/context/PlayerContext";
+import { usePlayer } from "@/hooks";
 
 export default function JoinPage({ params }) {
   const { player } = usePlayer();

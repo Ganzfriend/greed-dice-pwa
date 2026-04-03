@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { supabase } from "@/lib/supabaseClient";
 import { GameContext } from "@/contexts";
+import { ActivePlayer, GameState } from "@/types";
 // import { calculatePoints } from "./helpers";
 // import type {
 //    GameContextType,
@@ -20,11 +21,11 @@ import { GameContext } from "@/contexts";
 //   isBust: false,
 // };
 
-export const GameProvider: React.FC<{
-  gameId: number;
+const GameProvider: React.FC<{
+  gameId: string;
   children: React.ReactNode;
 }> = ({ gameId, children }) => {
-  const [game, setGame] = useState(null);
+  const [game, setGame] = useState<Partial<GameState> | null>(null);
 
   const refreshGame = useCallback(
     async function () {
@@ -33,7 +34,7 @@ export const GameProvider: React.FC<{
         .select("*, players(*)")
         .eq("game_id", gameId);
 
-      setGame(data);
+      setGame({ players: data as ActivePlayer[] });
     },
     [gameId],
   );

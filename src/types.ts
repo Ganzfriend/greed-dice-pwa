@@ -22,7 +22,7 @@ export type GameState = {
 };
 
 export type GameContextType = {
-  state: GameState;
+  game: GameState;
   rollDice: () => void;
   saveSelectedDice: (dice: number[]) => void;
   savePoints: () => void;
