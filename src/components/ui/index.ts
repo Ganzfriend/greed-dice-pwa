@@ -1,4 +1,4 @@
-import * as Button from "./button.tsx";
-import * as Card from "./card.tsx";
+import { Button, buttonVariants } from "./button";
+import * as Card from "./card";
 
-export { Button, Card };
+export { Button, buttonVariants, Card };

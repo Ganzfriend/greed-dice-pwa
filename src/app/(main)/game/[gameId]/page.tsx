@@ -1,9 +1,9 @@
 "use client";
 
-import GameProvider from "@/context/GameProvider.tsx";
-import { Dice } from "@/components/index.ts";
-// import { RollButton } from "@/components/index.ts";
-// import { PlayerList } from "@/components/index.ts";
+import { GameProvider } from "@/context";
+import { Dice } from "@/components";
+// import { RollButton } from "@/components";
+// import { PlayerList } from "@/components";
 
 type ParamsType = {
   params: {

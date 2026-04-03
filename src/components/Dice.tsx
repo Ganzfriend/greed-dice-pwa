@@ -1,5 +1,5 @@
-import { useGame } from "@/context/useGame.ts";
-import { GameContextType } from "@/context/types.ts";
+import { useGame } from "@/context";
+import { GameContextType } from "@/context/types";
 
 export function Dice() {
   const { state }: GameContextType = useGame();

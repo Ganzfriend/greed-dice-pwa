@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button.tsx";
-import { useGame } from "@/context/index.ts";
+import { Button } from "@/components/ui";
+import { useGame } from "@/context";
 import { useState } from "react";
 
 export function Controls() {
