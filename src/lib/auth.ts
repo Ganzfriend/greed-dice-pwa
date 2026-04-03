@@ -7,20 +7,40 @@ export type AuthProps = {
 };
 
 export async function signUp({ email, password, captchaToken }: AuthProps) {
-  return supabase.auth.signUp({
-    email,
-    password,
-    options: { captchaToken },
-  });
+  try {
+    return await supabase.auth.signUp({
+      email,
+      password,
+      options: { captchaToken },
+    });
+  } catch (e) {
+    console.log("Error signing up: ", e);
+  }
 }
 
 export async function signIn({ email, password }: AuthProps) {
-  return supabase.auth.signInWithPassword({
-    email,
-    password,
-  });
+  try {
+    return await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+  } catch (e) {
+    console.log("Error signing in: ", e);
+  }
+}
+
+export async function signInAnonymously({ captchaToken }: Partial<AuthProps>) {
+  try {
+    return await supabase.auth.signInAnonymously({ options: { captchaToken } });
+  } catch (e) {
+    console.log("Error signing in anonymously: ", e);
+  }
 }
 
 export async function signOut() {
-  return supabase.auth.signOut();
+  try {
+    return await supabase.auth.signOut();
+  } catch (e) {
+    console.log("Error signing out: ", e);
+  }
 }
