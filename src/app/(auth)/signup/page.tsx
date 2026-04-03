@@ -1,3 +1,5 @@
+"use client";
+
 import { SubmitEventHandler, useRef, useState } from "react";
 import HCaptcha from "@hcaptcha/react-hcaptcha";
 
@@ -35,11 +37,21 @@ export default function Form() {
     <form onSubmit={handleSubmit}>
       <label>
         Email:
-        <input type="email" name="email" ref={emailRef} />
+        <input
+          type="email"
+          name="email"
+          ref={emailRef}
+          autoComplete="email webauthn"
+        />
       </label>
       <label>
         Password:
-        <input type="password" name="password" ref={passwordRef} />
+        <input
+          type="password"
+          name="password"
+          ref={passwordRef}
+          autoComplete="new-password webauthn"
+        />
       </label>
       <HCaptcha
         sitekey={sitekey}
