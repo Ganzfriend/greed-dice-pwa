@@ -1,8 +1,8 @@
 "use client";
 
-import { GameProvider } from "@/context/index.js";
-import { Scoreboard } from "@/components/index.js";
-import { Controls } from "@/components/index.js";
+import { GameProvider } from "@/context";
+import { Scoreboard } from "@/components";
+import { Controls } from "@/components";
 
 export default function Page() {
   return (
