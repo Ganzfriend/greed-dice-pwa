@@ -3,12 +3,14 @@ import { supabase } from "./supabaseClient";
 export type AuthProps = {
   email: string;
   password: string;
+  captchaToken: string;
 };
 
-export async function signUp({ email, password }: AuthProps) {
+export async function signUp({ email, password, captchaToken }: AuthProps) {
   return supabase.auth.signUp({
     email,
     password,
+    options: { captchaToken },
   });
 }
 
