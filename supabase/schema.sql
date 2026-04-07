@@ -1,5 +1,5 @@
 create table players (
-  id uuid primary key default gen_random_uuid(),
+  id uuid primary key references auth.users(id) on delete cascade,
   user_id uuid references auth.users(id), -- tie to Supabase Auth
   name text,
   is_guest boolean default true,
