@@ -1,8 +1,9 @@
-import { supabase } from "@/lib/supabaseClient";
+import { createClient } from "@/lib/supabase/client";
 import { generateJoinCode } from "@/lib/joinCode";
 
 export async function createGame(playerId: string) {
   const joinCode = generateJoinCode();
+  const supabase = createClient();
 
   const { data: game } = await supabase
     .from("games")

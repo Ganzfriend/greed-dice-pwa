@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { supabase } from "@/lib/supabaseClient";
+import { createClient } from "@/lib/supabase/client";
 import { GameContext } from "@/contexts";
 import { ActivePlayer, GameState } from "@/types";
 // import { calculatePoints } from "./helpers";
@@ -26,6 +26,7 @@ const GameProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ gameId, children }) => {
   const [game, setGame] = useState<Partial<GameState> | null>(null);
+  const supabase = createClient();
 
   const refreshGame = useCallback(
     async function () {
@@ -36,7 +37,7 @@ const GameProvider: React.FC<{
 
       setGame({ players: data as ActivePlayer[] });
     },
-    [gameId],
+    [gameId, supabase],
   );
 
   useEffect(() => {
@@ -60,7 +61,7 @@ const GameProvider: React.FC<{
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [gameId, refreshGame]);
+  }, [gameId, refreshGame, supabase]);
 
   return (
     <GameContext.Provider value={{ game }}>{children}</GameContext.Provider>

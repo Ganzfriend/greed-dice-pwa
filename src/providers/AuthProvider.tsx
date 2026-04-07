@@ -1,13 +1,14 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { User } from "@supabase/supabase-js";
 
 import { AuthContext } from "../contexts";
-import { supabase } from "../lib/supabaseClient";
+import { createClient } from "../lib/supabase/client";
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
+  const supabase = useMemo(() => createClient(), []);
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {

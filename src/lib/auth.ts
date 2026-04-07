@@ -1,10 +1,12 @@
-import { supabase } from "./supabaseClient";
+import { createClient } from "@/lib/supabase/client";
 
 export type AuthProps = {
   email: string;
   password: string;
   captchaToken: string;
 };
+
+const supabase = createClient();
 
 export async function signUp({ email, password, captchaToken }: AuthProps) {
   try {
