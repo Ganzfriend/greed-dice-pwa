@@ -38,3 +38,18 @@ create table game_turns (
   score integer,
   created_at timestamp default now()
 );
+
+create table game_events (
+  id uuid primary key default gen_random_uuid(),
+  game_id uuid references games(id) on delete cascade,
+  player_id uuid references players(id),
+  event_type text,
+  payload jsonb,
+  created_at timestamp default now()
+);
+-- examples:
+-- dice_rolled
+-- banked_score
+-- player_joined
+-- player_left
+-- game_started

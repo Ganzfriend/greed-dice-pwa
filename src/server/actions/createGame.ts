@@ -23,3 +23,9 @@ export async function createGame(playerId: string) {
 
   return game;
 }
+
+// export async function createGame() {
+//   const supabase = await createClient()
+
+//   const { data } = await supabase.from("games").insert({})
+// }
