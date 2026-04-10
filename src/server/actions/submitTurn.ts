@@ -1,11 +1,11 @@
-import { createClient } from "@/lib";
+import { createClient } from "@/lib/supabase/server";
 
 export async function submitTurn(
   gameId: string,
   playerId: string,
   points: number,
 ) {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   await supabase.from("game_turns").insert({
     game_id: gameId,

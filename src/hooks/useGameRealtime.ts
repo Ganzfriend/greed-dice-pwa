@@ -1,29 +1,27 @@
 "use client";
 
 import { useEffect } from "react";
-
 import { createClient } from "@/lib/supabase/client";
-import { GameState } from "@/types";
 
 const supabase = createClient();
 
 export function useGameRealtime(
   gameId: string,
-  setGame: (game: GameState) => void,
+  // setGame: (game: GameState) => void,
+  refreshGame: () => void,
 ) {
   useEffect(() => {
-    async function loadGame() {
-      const { data } = await supabase
-        .from("games")
-        .select("*")
-        .eq("id", gameId)
-        .single();
+    // async function loadGame() {
+    //   const { data } = await supabase
+    //     .from("games")
+    //     .select("*")
+    //     .eq("id", gameId)
+    //     .single();
 
-      if (data) setGame(data);
-    }
+    //   if (data) setGame(data);
+    // }
 
-    loadGame();
-
+    // loadGame();
     const channel = supabase
       .channel(`game-${gameId}`)
       .on(
@@ -34,9 +32,17 @@ export function useGameRealtime(
           table: "games",
           filter: `id=eq.${gameId}`,
         },
-        (payload) => {
-          setGame(payload.new as GameState);
+        () => refreshGame(),
+      )
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "game_players",
+          filter: `game_id=eq.${gameId}`,
         },
+        () => refreshGame(),
       )
       .subscribe((status) => {
         console.log("Realtime status:", status);
@@ -48,5 +54,5 @@ export function useGameRealtime(
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [gameId, setGame]);
+  }, [gameId, refreshGame]);
 }

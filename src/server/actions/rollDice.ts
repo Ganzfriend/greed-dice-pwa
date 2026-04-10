@@ -10,5 +10,12 @@ export async function rollDice(gameId: string) {
     () => Math.floor(Math.random() * 6) + 1,
   );
 
-  await supabase.from("games").update({ dice }).eq("id", gameId);
+  await supabase
+    .from("games")
+    .update({
+      dice,
+      saved_dice: [],
+      is_bust: false,
+    })
+    .eq("id", gameId);
 }
