@@ -1,31 +1,41 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 import { createClient } from "@/lib/supabase/client";
+import { GameState } from "@/types";
+
+const supabase = createClient();
 
 export function useGameRealtime(
   gameId: string,
-  handleGameEvent: (event: unknown) => void,
+  setGame: (game: GameState) => void,
 ) {
-  const supabase = createClient();
-  const handlerRef = useRef(handleGameEvent);
-
-  handlerRef.current = handleGameEvent;
-
   useEffect(() => {
+    async function loadGame() {
+      const { data } = await supabase
+        .from("games")
+        .select("*")
+        .eq("id", gameId)
+        .single();
+
+      if (data) setGame(data);
+    }
+
+    loadGame();
+
     const channel = supabase
       .channel(`game-${gameId}`)
       .on(
         "postgres_changes",
         {
-          event: "INSERT",
+          event: "*",
           schema: "public",
-          table: "game_events",
-          filter: `game_id=eq.${gameId}`,
+          table: "games",
+          filter: `id=eq.${gameId}`,
         },
         (payload) => {
-          handlerRef.current(payload.new);
+          setGame(payload.new as GameState);
         },
       )
       .subscribe((status) => {
@@ -38,5 +48,5 @@ export function useGameRealtime(
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [gameId]);
+  }, [gameId, setGame]);
 }

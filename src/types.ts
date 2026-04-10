@@ -1,67 +1,69 @@
-// export type Die = {
-//   value: number;
-//   saved: boolean;
-// };
+import { User } from "@supabase/supabase-js";
 
-// export type Dice = Die[];
+/* DATABASE TYPES */
 
 export type Player = {
-  playerId: string;
+  id: string;
   name: string;
-  score: number;
-};
-
-export type GameState = {
-  players: Player[];
-  currentPlayerId: number;
-  dice: number[];
-  savedDice: number[];
-  turnPoints: number;
-  isBust: boolean;
-  winnerPlayerId: number | null;
-};
-
-export type GameContextType = {
-  game: GameState;
-  rollDice: () => void;
-  saveSelectedDice: (dice: number[]) => void;
-  savePoints: () => void;
-  nextPlayer: () => void;
-  resetGame: () => void;
-};
-
-// back end models
-/*
-export type Player = {
-  id: number;
-  name: string;
+  is_guest: boolean;
+  created_at: string;
 };
 
 export type Game = {
-  id: number;
-  name?: string;
-  currentPlayerId: number | null;
-  winnerPlayerId?: number;
-  createdAt: string;
-  finishedAt?: string;
+  id: string;
+  join_code: string;
+  status: "waiting" | "active" | "finished";
+  current_player_id: string | null;
+  winner_player_id: string | null;
+  created_at: string;
 };
 
 export type GamePlayer = {
-  id: number;
-  gameId: number;
-  playerId: number;
-  name?: string;
+  id: string;
+  game_id: string;
+  player_id: string;
   score: number;
+  joined_at: string;
 };
 
-export type GameWithPlayers = {
-  id: number;
-  name?: string;
-  currentPlayerId: number;
-  players: {
-    playerId: number;
-    name: string;
-    score: number;
-  }[];
+/* JOINED TYPES */
+
+export type ActivePlayer = GamePlayer & {
+  players: Player;
 };
-*/
+
+/* CLIENT GAME STATE */
+
+export type GameState = {
+  id: string;
+  current_player_id: string | null;
+  winner_player_id: string | null;
+
+  dice: number[];
+  saved_dice: number[];
+
+  turn_points: number;
+  is_bust: boolean;
+
+  players: ActivePlayer[];
+};
+
+/* CONTEXT TYPES */
+
+export type AuthContextType = {
+  user: User | null;
+  loading: boolean;
+};
+
+export type PlayerContextType = {
+  player: Player | null;
+  loading: boolean;
+};
+
+export type GameContextType = {
+  game: GameState | null;
+  players: ActivePlayer[];
+  currentPlayerId: string | null;
+  isMyTurn: boolean;
+  refreshGame: () => Promise<void>;
+};

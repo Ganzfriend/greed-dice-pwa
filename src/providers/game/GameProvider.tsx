@@ -1,61 +1,34 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useState } from "react";
 
-import { createClient } from "@/lib/supabase/client";
-import { Player, GameState } from "@/types";
 import GameContext from "./GameContext";
+import { useGameRealtime } from "@/hooks/useGameRealtime";
+import { GameContextType, GameState } from "@/types";
 
-const supabase = createClient();
-
-const GameProvider: React.FC<{
+const GameProvider = ({
+  gameId,
+  children,
+}: {
   gameId: string;
   children: React.ReactNode;
-}> = ({ gameId, children }) => {
-  const [game, setGame] = useState<Partial<GameState> | null>(null);
+}) => {
+  const [game, setGame] = useState<GameState | null>(null);
 
-  const refreshGame = useCallback(async () => {
-    const { data } = await supabase
-      .from("game_players")
-      .select("*, players(*)")
-      .eq("game_id", gameId);
+  useGameRealtime(gameId, setGame);
 
-    setGame({
-      players: data as Player[],
-    });
-  }, [gameId]);
+  const players = game?.players ?? [];
+  const currentPlayerId = game?.current_player_id ?? null;
 
-  useEffect(() => {
-    refreshGame();
-  }, [refreshGame]);
+  const value: GameContextType = {
+    game,
+    players,
+    currentPlayerId,
+    isMyTurn: false,
+    refreshGame: async () => {},
+  };
 
-  useEffect(() => {
-    const channel = supabase
-      .channel(`game-${gameId}`)
-      .on(
-        "postgres_changes",
-        {
-          event: "*",
-          schema: "public",
-          table: "game_players",
-          filter: `game_id=eq.${gameId}`,
-        },
-        () => {
-          refreshGame();
-        },
-      )
-      .subscribe();
-
-    return () => {
-      supabase.removeChannel(channel);
-    };
-  }, [gameId, refreshGame]);
-
-  return (
-    <GameContext.Provider value={{ game, refreshGame }}>
-      {children}
-    </GameContext.Provider>
-  );
+  return <GameContext.Provider value={value}>{children}</GameContext.Provider>;
 };
 
 export default GameProvider;

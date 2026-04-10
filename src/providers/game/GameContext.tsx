@@ -1,13 +1,6 @@
 import { createContext } from "react";
-import { Player, GameState } from "@/types";
 
-export type GameContextType = {
-  game: GameState | null;
-  players: Player[];
-  currentPlayerId: string | null;
-  isMyTurn: boolean;
-  refreshGame: () => Promise<void>;
-};
+import { GameContextType } from "@/types";
 
 const GameContext = createContext<GameContextType>({
   game: null,
