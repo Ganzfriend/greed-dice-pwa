@@ -2,8 +2,8 @@
 
 import { GameProvider } from "@/providers";
 import { Dice } from "@/components";
-import { useAuth } from "@/hooks";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/providers/auth/useAuth";
 // import { RollButton } from "@/components";
 // import { PlayerList } from "@/components";
 

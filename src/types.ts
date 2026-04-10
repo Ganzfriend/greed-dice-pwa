@@ -5,14 +5,14 @@
 
 // export type Dice = Die[];
 
-export type ActivePlayer = {
+export type Player = {
   playerId: number;
   name: string;
   score: number;
 };
 
 export type GameState = {
-  players: ActivePlayer[];
+  players: Player[];
   currentPlayerId: number;
   dice: number[];
   savedDice: number[];

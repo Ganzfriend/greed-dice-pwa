@@ -1,5 +1,3 @@
-import { useGame } from "./useGame";
-import { usePlayer } from "./usePlayer";
-import { useAuth } from "./useAuth";
+import { useGameRealtime } from "./useGameRealtime";
 
-export { useGame, usePlayer, useAuth };
+export { useGameRealtime };

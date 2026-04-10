@@ -1,5 +1,5 @@
-import AuthProvider from "./AuthProvider";
-import GameProvider from "./GameProvider";
-import PlayerProvider from "./PlayerProvider";
+import AuthProvider from "./auth/AuthProvider";
+import GameProvider from "./game/GameProvider";
+import PlayerProvider from "./player/PlayerProvider";
 
 export { AuthProvider, GameProvider, PlayerProvider };
