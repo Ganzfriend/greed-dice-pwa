@@ -1,7 +1,8 @@
 -- tables
 create table players (
-  id uuid primary key references auth.users(id) on delete cascade,
-  name text,
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid references auth.users(id) on delete cascade,
+  name text not null,
   is_guest boolean default true,
   created_at timestamp default now()
 );
@@ -32,6 +33,17 @@ create table game_events (
   player_id uuid references players(id),
   event_type text,
   payload jsonb,
+  created_at timestamp default now()
+);
+
+create table game_turns (
+  id uuid primary key default gen_random_uuid(),
+  game_id uuid references games(id) on delete cascade,
+  player_id uuid references players(id) on delete cascade,
+  dice jsonb,
+  saved_dice jsonb,
+  turn_points integer default 0,
+  is_bust boolean default false,
   created_at timestamp default now()
 );
 
