@@ -3,8 +3,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { User } from "@supabase/supabase-js";
 
-import { AuthContext } from "../contexts";
-import { createClient } from "../lib/supabase/client";
+import { AuthContext } from "@/contexts";
+import { createClient } from "@/lib/supabase/client";
 
 const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
