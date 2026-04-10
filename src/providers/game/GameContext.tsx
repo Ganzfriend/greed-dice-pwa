@@ -1,13 +1,19 @@
 import { createContext } from "react";
-import { GameState } from "@/types";
+import { Player, GameState } from "@/types";
 
-type GameContextType = {
-  game: Partial<GameState> | null;
+export type GameContextType = {
+  game: GameState | null;
+  players: Player[];
+  currentPlayerId: string | null;
+  isMyTurn: boolean;
   refreshGame: () => Promise<void>;
 };
 
 const GameContext = createContext<GameContextType>({
   game: null,
+  players: [],
+  currentPlayerId: null,
+  isMyTurn: false,
   refreshGame: async () => {},
 });
 
