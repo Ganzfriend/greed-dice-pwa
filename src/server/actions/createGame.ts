@@ -1,15 +1,16 @@
-import { createClient } from "@/lib/supabase/client";
+"use server";
+
+import { createClient } from "@/lib/supabase/server";
 import { generateJoinCode } from "@/lib/joinCode";
 
 export async function createGame(playerId: string) {
   const joinCode = generateJoinCode();
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const { data: game } = await supabase
     .from("games")
     .insert({
       join_code: joinCode,
-      status: "waiting",
       current_player_id: playerId,
     })
     .select()
@@ -18,14 +19,7 @@ export async function createGame(playerId: string) {
   await supabase.from("game_players").insert({
     game_id: game.id,
     player_id: playerId,
-    seat_order: 0,
   });
 
   return game;
 }
-
-// export async function createGame() {
-//   const supabase = await createClient()
-
-//   const { data } = await supabase.from("games").insert({})
-// }

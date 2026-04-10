@@ -1,19 +1,20 @@
 import { createClient } from "@/lib/supabase/client";
 
+const supabase = createClient();
+
 export type AuthProps = {
   email: string;
   password: string;
-  captchaToken: string;
+  captchaToken?: string;
 };
 
-const supabase = createClient();
+/* ------------------ AUTH USERS ------------------ */
 
-export async function signUp({ email, password, captchaToken }: AuthProps) {
+export async function signUp({ email, password }: AuthProps) {
   try {
-    return await supabase.auth.signUp({
+    return supabase.auth.signUp({
       email,
       password,
-      options: { captchaToken },
     });
   } catch (e) {
     console.log("Error signing up: ", e);
@@ -22,7 +23,7 @@ export async function signUp({ email, password, captchaToken }: AuthProps) {
 
 export async function signIn({ email, password }: AuthProps) {
   try {
-    return await supabase.auth.signInWithPassword({
+    return supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -31,25 +32,43 @@ export async function signIn({ email, password }: AuthProps) {
   }
 }
 
-export async function guestLogin({ captchaToken }: Partial<AuthProps>) {
-  try {
-    return await supabase.auth.signInAnonymously({ options: { captchaToken } });
-  } catch (e) {
-    console.log("Error signing in anonymously: ", e);
-  }
-}
-
 export async function signOut() {
   try {
-    return await supabase.auth.signOut();
+    return supabase.auth.signOut();
   } catch (e) {
     console.log("Error signing out: ", e);
   }
 }
 
-export async function updateUser({ email, password }: AuthProps) {
-  supabase.auth.updateUser({
-    email,
-    password,
-  });
+/* ------------------ GUEST PLAYER ------------------ */
+/**
+ * IMPORTANT:
+ * This does NOT use Supabase Auth.
+ * It creates a player row directly.
+ */
+export async function createGuestPlayer() {
+  const randomName = `Guest${Math.floor(Math.random() * 9999)}`;
+
+  const { data, error } = await supabase
+    .from("players")
+    .insert({
+      name: randomName,
+      is_guest: true,
+      user_id: null,
+    })
+    .select()
+    .single();
+
+  if (error) throw error;
+
+  localStorage.setItem("playerId", data.id);
+
+  return data;
 }
+
+// export async function updateUser({ email, password }: AuthProps) {
+//   supabase.auth.updateUser({
+//     email,
+//     password,
+//   });
+// }
