@@ -1,18 +1,24 @@
-import { useGame } from "@/hooks";
-import { GameContextType } from "@/types";
+"use client";
+
+import { useGame } from "@/providers/game/useGame";
 
 export function Dice() {
-  const { game }: GameContextType = useGame();
+  const { game } = useGame();
 
-  if (!game) return null;
+  if (!game?.dice) return null;
 
   return (
     <div>
-      {game.players?.map(({ playerId, name, score }) => (
+      {game.dice.map((value, i) => (
+        <div key={i} className="text-2xl">
+          🎲 {value}
+        </div>
+      ))}
+      {/* {game.players?.map(({ playerId, name, score }) => (
         <div key={playerId}>
           {name} — {score}
         </div>
-      ))}
+      ))} */}
     </div>
   );
 }

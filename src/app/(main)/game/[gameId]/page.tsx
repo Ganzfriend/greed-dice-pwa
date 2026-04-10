@@ -1,11 +1,9 @@
 "use client";
 
 import { GameProvider } from "@/providers";
-import { Dice } from "@/components";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/providers/auth/useAuth";
-// import { RollButton } from "@/components";
-// import { PlayerList } from "@/components";
+import { GameBoard } from "@/components";
 
 type ParamsType = {
   params: {
@@ -24,9 +22,7 @@ export default function GamePage({ params }: ParamsType) {
 
   return (
     <GameProvider gameId={params.gameId}>
-      {/* <PlayerList /> */}
-      <Dice />
-      {/* <RollButton /> */}
+      <GameBoard />
     </GameProvider>
   );
 }

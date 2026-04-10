@@ -6,7 +6,7 @@
 // export type Dice = Die[];
 
 export type Player = {
-  playerId: number;
+  playerId: string;
   name: string;
   score: number;
 };

@@ -1,17 +1,17 @@
+"use client";
+
 import { Card, CardContent } from "@/components/ui/card";
-import { useGame } from "@/hooks";
+import { useGame } from "@/providers/game/useGame";
 
 export function Scoreboard() {
-  const { game } = useGame();
+  const { players, currentPlayerId } = useGame();
 
   return (
     <div className="grid gap-2">
-      {game.players.map((p) => (
+      {players.map((p) => (
         <Card
           key={p.playerId}
-          className={
-            p.playerId === game.currentPlayerId ? "border-blue-500" : ""
-          }
+          className={p.playerId === currentPlayerId ? "border-blue-500" : ""}
         >
           <CardContent>
             <p className="font-bold">{p.name}</p>
