@@ -14,7 +14,8 @@ create table games (
   host_id uuid references players(id),
   current_player_id uuid references players(id),
   winner_player_id uuid references players(id),
-  created_at timestamp default now()
+  created_at timestamp default now(),
+  turn_number integer default 1
 );
 
 create table game_players (
