@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui";
-import { signIn, signUp, createGuestPlayer } from "@/lib/auth";
+import { signIn, signUp } from "@/lib/auth";
 
 export default function LoginPage() {
   const emailRef = useRef<HTMLInputElement | null>(null);
@@ -21,12 +21,6 @@ export default function LoginPage() {
 
   const handleSignUp = async () => {
     await signUp({ email: email(), password: password() });
-    router.push("/");
-  };
-
-  const handleGuest = async () => {
-    const player = await createGuestPlayer();
-    console.log("Guest player created:", player);
     router.push("/");
   };
 
@@ -50,8 +44,6 @@ export default function LoginPage() {
       <Button onClick={handleSignUp}>Create Account</Button>
 
       <div className="text-center opacity-60">or</div>
-
-      <Button onClick={handleGuest}>Continue as Guest</Button>
     </div>
   );
 }
