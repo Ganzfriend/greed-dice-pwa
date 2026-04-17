@@ -84,17 +84,11 @@ on players
 for update
 using (auth.uid() = id);
 
-create policy "Players can view their games"
+create policy "Allow reading games"
 on games
 for select
-using (
-  exists (
-    select 1
-    from game_players
-    where game_players.game_id = games.id
-    and game_players.player_id = auth.uid()
-  )
-);
+to anon, authenticated
+using (true);
 
 create policy "Players can create games"
 on games
@@ -113,17 +107,11 @@ using (
   )
 );
 
-create policy "Players can view players in their games"
+create policy "Allow reading game players"
 on game_players
 for select
-using (
-  exists (
-    select 1
-    from game_players gp
-    where gp.game_id = game_players.game_id
-    and gp.player_id = auth.uid()
-  )
-);
+to anon, authenticated
+using (true);
 
 create policy "Players can join games"
 on game_players
