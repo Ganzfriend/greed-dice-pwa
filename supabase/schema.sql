@@ -145,6 +145,12 @@ on game_events
 for insert
 with check (auth.uid() = player_id);
 
+create policy "Allow guest players"
+on players
+for insert
+to anon
+with check (is_guest = true);
+
 
 -- functions
 create or replace function generate_join_code()
