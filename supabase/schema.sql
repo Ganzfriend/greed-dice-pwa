@@ -62,15 +62,22 @@ alter table game_events enable row level security;
 
 
 -- policies
-create policy "Players can create their own profile"
+create policy "Players can create profiles"
 on players
 for insert
-with check (auth.uid() = id);
+to anon, authenticated
+with check (
+  is_guest = true
+  OR auth.uid() = user_id
+);
 
-create policy "Players can view their own profile"
+create policy "Players can view profiles"
 on players
 for select
-using (auth.uid() = id);
+using (
+  is_guest = true
+  OR auth.uid() = user_id
+);
 
 create policy "Players can update their profile"
 on players
@@ -145,11 +152,6 @@ on game_events
 for insert
 with check (auth.uid() = player_id);
 
-create policy "Allow guest players"
-on players
-for insert
-to anon
-with check (is_guest = true);
 
 
 -- functions
