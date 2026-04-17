@@ -34,7 +34,8 @@ create table game_events (
   player_id uuid references players(id),
   event_type text,
   payload jsonb,
-  created_at timestamp default now()
+  created_at timestamp default now(),
+  event_number bigint generated always as identity
 );
 
 create table game_turns (
@@ -53,6 +54,8 @@ create table game_turns (
 create index idx_game_players_game_id on game_players(game_id);
 create index idx_game_events_game_id on game_events(game_id);
 create unique index idx_games_join_code on games(join_code);
+create index idx_game_events_game_event_number
+on game_events (game_id, event_number);
 
 
 -- enable rls
@@ -141,6 +144,18 @@ on game_events
 for insert
 with check (auth.uid() = player_id);
 
+create policy "Allow reading events"
+on game_events
+for select
+to anon, authenticated
+using (true);
+
+create policy "Allow inserting events"
+on game_events
+for insert
+to anon, authenticated
+with check (true);
+
 
 
 -- functions
@@ -184,3 +199,15 @@ $$;
 create trigger on_auth_user_created
 after insert on auth.users
 for each row execute procedure public.handle_new_user();
+
+
+-- types
+create type game_event_type as enum (
+  'GAME_CREATED',
+  'PLAYER_JOINED',
+  'ROLL_DICE',
+  'SAVE_DICE',
+  'END_TURN',
+  'BUST',
+  'BANK_POINTS'
+);
