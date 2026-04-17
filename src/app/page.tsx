@@ -1,37 +1,18 @@
 "use client";
 
-import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui";
 import { createGuestPlayer } from "@/lib/auth";
-import { usePlayer } from "@/providers/player/usePlayer";
-import { joinGame } from "@/server/actions/joinGame";
 
 export default function HomePage() {
-  const { player } = usePlayer();
   const router = useRouter();
-
-  const [gameCode, setGameCode] = useState<string>("");
-
-  async function join() {
-    if (player?.id) {
-      await joinGame({ playerId: player.id, code: gameCode });
-    } else {
-      throw new Error("Player not found");
-    }
-  }
-
-  const isDisabled = useMemo(
-    () => !gameCode || gameCode.length < 6,
-    [gameCode],
-  );
 
   const handleGuest = async () => {
     const player = await createGuestPlayer();
     console.log("Guest player created:", player);
-    router.push("/");
+    router.push("/lobby");
   };
 
   return (
@@ -47,38 +28,6 @@ export default function HomePage() {
         onClick={handleGuest}
       >
         Continue as Guest
-      </Button>
-
-      <div className="flex flex-col gap-2 items-center">
-        <label id="game-code-ref">Join Existing Game</label>
-        <input
-          type="text"
-          placeholder="Code (e.g. XXXXXX)"
-          id="game-code-ref"
-          value={gameCode}
-          onChange={(e) => setGameCode(e.target.value)}
-          minLength={6}
-          maxLength={6}
-          className="border border-black p-3"
-        />
-      </div>
-
-      <Button
-        disabled={isDisabled}
-        aria-disabled={isDisabled}
-        style={
-          isDisabled
-            ? {
-                pointerEvents: "none",
-                color: "gray",
-                backgroundColor: "lightgray",
-              }
-            : {}
-        }
-        className="px-6 py-3 border border-blue rounded"
-        onClick={join}
-      >
-        Join Game
       </Button>
     </main>
   );
