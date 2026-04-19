@@ -28,7 +28,7 @@ export default function LoginPage() {
 
   const handleSignIn = async () => {
     await signIn({ email: getEmail(), password: getPassword() });
-    router.push("/");
+    router.push("/lobby");
   };
 
   const handleSignUp = async (e: MouseEvent<HTMLButtonElement>) => {
@@ -54,7 +54,7 @@ export default function LoginPage() {
     setToken(null);
     alert("Email, password, and captcha are required");
 
-    router.push("/");
+    router.push("/lobby");
   };
 
   return (

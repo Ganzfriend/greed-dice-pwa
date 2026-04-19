@@ -97,7 +97,14 @@ using (true);
 create policy "Players can create games"
 on games
 for insert
-with check (auth.uid() = host_id);
+with check (
+  exists (
+    select 1
+    from players
+    where players.id = host_id
+    and players.user_id = auth.uid()
+  )
+);
 
 create policy "Players in game can update game"
 on games
@@ -105,9 +112,10 @@ for update
 using (
   exists (
     select 1
-    from game_players
-    where game_players.game_id = games.id
-    and game_players.player_id = auth.uid()
+    from game_players gp
+    join players p on p.id = gp.player_id
+    where gp.game_id = games.id
+    and p.user_id = auth.uid()
   )
 );
 
@@ -120,7 +128,14 @@ using (true);
 create policy "Players can join games"
 on game_players
 for insert
-with check (auth.uid() = player_id);
+with check (
+  exists (
+    select 1
+    from players
+    where players.id = player_id
+    and players.user_id = auth.uid()
+  )
+);
 
 create policy "Players can update their game state"
 on game_players
