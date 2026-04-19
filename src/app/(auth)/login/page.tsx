@@ -39,7 +39,11 @@ export default function LoginPage() {
     if (token && email && password) {
       console.log(`hCaptcha Token: ${token}`);
       try {
-        await signUp({ email, password, captchaToken: token });
+        await signUp({
+          email,
+          password,
+          captchaToken: token,
+        });
       } catch (e) {
         alert(`Error: ${e}`);
       }

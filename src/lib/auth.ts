@@ -10,12 +10,19 @@ export type AuthProps = {
 
 /* ------------------ AUTH USERS ------------------ */
 
-export async function signUp({ email, password }: AuthProps) {
+export async function signUp({ email, password, captchaToken }: AuthProps) {
   try {
-    return supabase.auth.signUp({
-      email,
-      password,
-    });
+    const payload = captchaToken
+      ? {
+          email,
+          password,
+          options: {
+            captchaToken,
+          },
+        }
+      : { email, password };
+
+    return supabase.auth.signUp(payload);
   } catch (e) {
     console.log("Error signing up: ", e);
   }
