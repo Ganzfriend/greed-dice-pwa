@@ -12,6 +12,7 @@ const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [player, setPlayer] = useState<Player | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const initPlayer = useCallback(async () => {
     const storedId = localStorage.getItem("playerId");
@@ -42,10 +43,11 @@ const PlayerProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     initPlayer();
+    setLoading(false);
   }, [initPlayer]);
 
   return (
-    <PlayerContext.Provider value={{ player }}>
+    <PlayerContext.Provider value={{ player, loading }}>
       {children}
     </PlayerContext.Provider>
   );
