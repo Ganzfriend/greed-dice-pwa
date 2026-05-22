@@ -13,9 +13,11 @@ const GameProvider = ({
   gameId: string;
   children: React.ReactNode;
 }) => {
-  const [game, setGame] = useState<GameState | null>(null);
+  const [game] = useState<GameState | null>(null);
 
-  useGameRealtime(gameId, setGame);
+  const refreshGame = async () => {};
+
+  useGameRealtime(gameId, refreshGame);
 
   const players = game?.players ?? [];
   const currentPlayerId = game?.current_player_id ?? null;
@@ -25,7 +27,7 @@ const GameProvider = ({
     players,
     currentPlayerId,
     isMyTurn: false,
-    refreshGame: async () => {},
+    refreshGame,
   };
 
   return <GameContext.Provider value={value}>{children}</GameContext.Provider>;

@@ -1,24 +1,26 @@
 "use client";
 
 import { GameProvider } from "@/providers";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/providers/auth/useAuth";
+import {
+  useParams,
+  // useRouter
+} from "next/navigation";
+// import { useAuth } from "@/providers/auth/useAuth";
 import { GameBoard } from "@/components";
 
-type ParamsType = {
-  params: {
-    gameId: string;
-  };
-};
-
-export default function GamePage({ params }: ParamsType) {
+export default function GamePage() {
+  const params = useParams<{ gameId: string }>();
   console.log("## ", { params });
-  const router = useRouter();
-  const { user } = useAuth();
+  // const router = useRouter();
+  // const { user } = useAuth();
 
-  if (!user) {
-    router.push("/login");
-  }
+  // if (!user) {
+  //   router.push("/");
+  // }
+
+  // if (!params.gameId) {
+  //   router.push("/");
+  // }
 
   return (
     <GameProvider gameId={params.gameId}>

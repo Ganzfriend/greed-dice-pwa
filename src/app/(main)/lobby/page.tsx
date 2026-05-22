@@ -6,20 +6,28 @@ import { joinGame } from "@/server/actions/joinGame";
 import { usePlayer } from "@/providers/player/usePlayer";
 import { Button } from "@/components/ui";
 import { createGame } from "@/server/actions/createGame";
+import { useRouter } from "next/navigation";
 
 export default function LobbyPage() {
   const { player } = usePlayer();
+  const router = useRouter();
 
   const [gameCode, setGameCode] = useState<string>("");
-  const isDisabled = useMemo(
+  const [isLoadingCreateGame, setIsLoadingCreateGame] = useState(false);
+  const disabledJoinGame = useMemo(
     () => !gameCode || gameCode.length < 6,
     [gameCode],
   );
 
   const handleCreateGame = async () => {
+    setIsLoadingCreateGame(true);
+
     if (player?.id) {
-      await createGame({ playerId: player.id });
+      const game = await createGame({ playerId: player.id });
+      setIsLoadingCreateGame(false);
+      router.push(`/game/${game.id}`);
     } else {
+      setIsLoadingCreateGame(false);
       throw new Error("Player not found");
     }
   };
@@ -35,7 +43,11 @@ export default function LobbyPage() {
   return (
     <div className="h-screen flex flex-col justify-center items-center">
       <div className="flex flex-col gap-20 items-center">
-        <Button className="border p-4" onClick={handleCreateGame}>
+        <Button
+          className="border p-4"
+          onClick={handleCreateGame}
+          disabled={isLoadingCreateGame}
+        >
           Create Game
         </Button>
 
@@ -52,10 +64,10 @@ export default function LobbyPage() {
           />
 
           <Button
-            disabled={isDisabled}
-            aria-disabled={isDisabled}
+            disabled={disabledJoinGame}
+            aria-disabled={disabledJoinGame}
             style={
-              isDisabled
+              disabledJoinGame
                 ? {
                     pointerEvents: "none",
                     color: "gray",

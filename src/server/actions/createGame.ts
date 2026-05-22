@@ -1,6 +1,7 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
+import { Game } from "@/types";
 
 export async function createGame({ playerId }: { playerId: string }) {
   const supabase = await createClient();
@@ -38,5 +39,5 @@ export async function createGame({ playerId }: { playerId: string }) {
       throw new Error(`Error inserting into game_players table: ${e.message}`);
   }
 
-  return game;
+  return game as Game;
 }

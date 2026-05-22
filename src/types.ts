@@ -13,9 +13,11 @@ export type Game = {
   id: string;
   join_code: string;
   status: "waiting" | "active" | "finished";
+  host_id: string | null;
   current_player_id: string | null;
   winner_player_id: string | null;
   created_at: string;
+  turn_number: number | null;
 };
 
 export type GamePlayer = {
