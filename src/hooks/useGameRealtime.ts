@@ -5,25 +5,13 @@ import { createClient } from "@/lib/supabase/client";
 
 const supabase = createClient();
 
-export function useGameRealtime(
-  gameId: string,
-  // setGame: (game: GameState) => void,
-  refreshGame: () => void,
-) {
+export function useGameRealtime(gameId: string, refreshGame: () => void) {
   useEffect(() => {
-    // async function loadGame() {
-    //   const { data } = await supabase
-    //     .from("games")
-    //     .select("*")
-    //     .eq("id", gameId)
-    //     .single();
+    refreshGame();
 
-    //   if (data) setGame(data);
-    // }
-
-    // loadGame();
     const channel = supabase
       .channel(`game-${gameId}`)
+
       .on(
         "postgres_changes",
         {
@@ -32,8 +20,9 @@ export function useGameRealtime(
           table: "games",
           filter: `id=eq.${gameId}`,
         },
-        () => refreshGame(),
+        refreshGame,
       )
+
       .on(
         "postgres_changes",
         {
@@ -42,8 +31,9 @@ export function useGameRealtime(
           table: "game_players",
           filter: `game_id=eq.${gameId}`,
         },
-        () => refreshGame(),
+        refreshGame,
       )
+
       .subscribe((status) => {
         console.log("Realtime status:", status);
         if (status === "SUBSCRIBED") {
